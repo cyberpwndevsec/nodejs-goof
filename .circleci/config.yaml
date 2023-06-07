@@ -1,0 +1,37 @@
+version: 2.1
+orbs:
+  node: circleci/node@4.7
+  snyk: snyk/snyk@1.7.0
+
+jobs:
+  npm_build:
+    docker:
+      - image: cimg/node:20.2.0
+    steps:
+      - checkout 
+      - run: npm build
+  snyk_sca:
+    docker:
+      - image: cimg/node:20.2.0
+    steps:
+      - checkout
+      - snyk/install
+      - snyk/scan
+
+  npm_test:
+    docker:
+      - image: cimg/node:20.2.0
+    steps:
+      - checkout 
+      - run: npm test
+
+
+workflows: 
+  build_test: 
+    jobs:
+      - npm_build
+      - snyk_sca:
+          requires:
+           - npm_build
+          requires:
+           - snyk_sca
