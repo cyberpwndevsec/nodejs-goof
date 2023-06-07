@@ -18,7 +18,13 @@ jobs:
       - snyk/install
       - snyk/scan:
           fail-on-issues: false
-
+  snyk_code:
+    docker:
+      - image: cimg/node:20.2.0
+    steps:
+      - checkout
+      - snyk/install
+      - run: snyk code test || true
   npm_test:
     docker:
       - image: cimg/node:20.2.0
@@ -34,6 +40,9 @@ workflows:
       - snyk_sca:
           requires:
            - npm_build
-      - npm_test:    
+      - snyk_code:
           requires:
            - snyk_sca
+      - npm_test:    
+          requires:
+           - snyk_code
