@@ -33,5 +33,6 @@ workflows:
       - snyk_sca:
           requires:
            - npm_build
+      - npm_test:    
           requires:
            - snyk_sca
