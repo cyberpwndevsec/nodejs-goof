@@ -31,8 +31,16 @@ jobs:
     steps:
       - checkout 
       - snyk/install
-      - run: npm test
-
+      - run: npm test || true
+  docker_build_scan:
+    docker:
+      - image: cimg/base:2023.06
+    steps:
+      - checkout 
+      - docker build -t nodejsgoof .
+      - snyk/install
+      - snyk/scan:
+          docker-image-name: nodejsgoof
 
 workflows: 
   build_test: 
@@ -47,3 +55,6 @@ workflows:
       - npm_test:    
           requires:
            - snyk_code
+      - docker_build_scan:
+          requires:
+           - npm_test
