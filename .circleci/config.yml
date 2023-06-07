@@ -37,7 +37,7 @@ jobs:
       - image: cimg/base:2023.06
     steps:
       - checkout 
-      - docker build -t nodejsgoof .
+      - run: docker build -t nodejsgoof .
       - snyk/install
       - snyk/scan:
           docker-image-name: nodejsgoof
