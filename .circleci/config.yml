@@ -16,7 +16,8 @@ jobs:
     steps:
       - checkout
       - snyk/install
-      - snyk/scan || true
+      - snyk/scan:
+          fail-on-issues: false
 
   npm_test:
     docker:
