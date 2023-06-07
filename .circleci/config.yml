@@ -37,6 +37,8 @@ jobs:
       - image: cimg/base:2023.06
     steps:
       - checkout 
+      - setup_remote_docker:
+          version: 20.10.14
       - run: docker build -t nodejsgoof .
       - snyk/install
       - snyk/scan:
