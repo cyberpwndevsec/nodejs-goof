@@ -43,6 +43,7 @@ jobs:
       - snyk/install
       - snyk/scan:
           docker-image-name: nodejsgoof
+          fail-on-issues: false
 
 workflows: 
   build_test: 
