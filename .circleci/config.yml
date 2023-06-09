@@ -46,7 +46,14 @@ jobs:
           fail-on-issues: false
       - run: docker login -u $docker_username -p $docker_password 
       - run: docker push cyberpwndevsec/nodejsgoof:testci
-      
+  snyk_iac:
+    docker:
+      - image: cimg/node:20.2.0
+    steps:
+      - checkout
+      - snyk/install
+      - snyk/scan-iac:
+          fail-on-issues: false   
 workflows: 
   build_test: 
     jobs:
@@ -63,3 +70,6 @@ workflows:
       - docker_build_snykscan_push:
           requires:
            - npm_test
+      - snyk_iac:
+          requires:
+           - docker_build_snykscan_push
