@@ -39,12 +39,14 @@ jobs:
       - checkout 
       - setup_remote_docker:
           version: 20.10.14
-      - run: docker build -t nodejsgoof:testci .
+      - run: docker build -t cyberpwndevsec/nodejsgoof:testci .
       - snyk/install
       - snyk/scan:
-          docker-image-name: nodejsgoof:testci
+          docker-image-name: cyberpwndevsec/nodejsgoof:testci
           fail-on-issues: false
-      - run: docker push -u $docker_username -p $docker_password nodejsgoof:testci
+      - run: docker login -u $docker_username -p $docker_password 
+      - run: docker push cyberpwndevsec/nodejsgoof:testci
+      
 workflows: 
   build_test: 
     jobs:
