@@ -52,8 +52,8 @@ jobs:
     steps:
       - checkout
       - snyk/install
-      - snyk/scan-iac:
-          fail-on-issues: false   
+      - run: snyk iac test || true
+     
 workflows: 
   build_test: 
     jobs:
