@@ -32,19 +32,19 @@ jobs:
       - checkout 
       - snyk/install
       - run: npm test || true
-  docker_build_scan:
+  docker_build_snykscan_push:
     docker:
       - image: cimg/base:2023.06
     steps:
       - checkout 
       - setup_remote_docker:
           version: 20.10.14
-      - run: docker build -t nodejsgoof .
+      - run: docker build -t nodejsgoof:testci .
       - snyk/install
       - snyk/scan:
-          docker-image-name: nodejsgoof
+          docker-image-name: nodejsgoof:testci
           fail-on-issues: false
-
+      - run: docker push -u $docker_username -p $docker_password nodejsgoof:testci
 workflows: 
   build_test: 
     jobs:
@@ -58,6 +58,6 @@ workflows:
       - npm_test:    
           requires:
            - snyk_code
-      - docker_build_scan:
+      - docker_build_snykscan_push:
           requires:
            - npm_test
